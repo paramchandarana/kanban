@@ -1,8 +1,8 @@
-import data from "../../lib/placeholder_data.json";
+import { fetchProjects } from "../../lib/data";
 import Card from "@/app/ui/boards/card";
 
-export default function Page() {
-  const boards = data.boards;
+export default async function Page() {
+  const boards = await fetchProjects();
 
   return (
     <main className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 px-4 py-8">

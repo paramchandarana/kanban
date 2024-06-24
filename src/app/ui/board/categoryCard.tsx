@@ -1,30 +1,27 @@
-'use client';
+import Link from "next/link";
+import TaskCard from "./taskCard";
+import { fetchTasksByCategory } from "@/app/lib/data";
 
-import Link from 'next/link';
-import TaskCard from './taskCard';
-import { usePathname } from 'next/navigation';
-
-
-function CategoryCard({ category }: { category: any }) {
-  const pathname = usePathname();
-  const handleAddTask = () => {
-    // Implement your logic to add a new task
-    console.log('Adding new task...');
-  };
+async function CategoryCard({ category }: { category: any }) {
+  // Assuming you're fetching tasks based on category.category_id
+  const tasks = await fetchTasksByCategory(category.category_id);
 
   return (
     <div className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm p-4 w-72">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">{category.title}</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        {category.title}
+      </h3>
       <div className="space-y-4 flex-grow overflow-y-auto">
-        {category.tasks.map((task: any) => (
-          <TaskCard key={task.id} task={task} />
+        {tasks.map((task: any) => (
+          <TaskCard key={task.task_id} task={task} />
         ))}
       </div>
       <Link
+        href={`/boards/${category.project_id}/add-task`}
         className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-        href={`${pathname}/add-task`}
+        passHref
       >
-        Add New Task
+          Add New Task
       </Link>
     </div>
   );
