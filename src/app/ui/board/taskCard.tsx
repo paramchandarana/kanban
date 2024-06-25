@@ -1,7 +1,21 @@
 import { Draggable } from "react-beautiful-dnd";
 
 export default function TaskCard({ task, index }: any) {
-  console.log("due date=", task.due_date);
+  // Function to format date as needed
+  const formatDate = (dateString: any) => {
+    if (!dateString) {
+      return 'No Due Date';
+    }
+    
+    const dateObject = new Date(dateString);
+    if (isNaN(dateObject.getTime())) {
+      return 'Invalid Date';
+    }
+    
+    const formattedDate = `${dateObject.getDate()}/${dateObject.getMonth() + 1}/${dateObject.getFullYear()}`;
+    return formattedDate;
+  };
+  console.log(task)
   return (
     <Draggable draggableId={`${task.task_id}`} index={index}>
       {(provided) => (
@@ -15,7 +29,7 @@ export default function TaskCard({ task, index }: any) {
           <p className="text-sm text-gray-600 mb-2">{task.description}</p>
           <div className="mb-2">
             <span className="text-xs text-gray-500">
-              Due Date: {task.due_date}
+              Due Date: {formatDate(task.duedate)}
             </span>
           </div>
           <div className="mb-2">
