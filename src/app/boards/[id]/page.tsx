@@ -1,5 +1,5 @@
 import { fetchProjects, fetchTasksByProject } from "../../lib/data";
-import ProjectContainer from "./projectContainer";
+import BoardContainer from "./boardContainer";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const boards = await fetchProjects();
@@ -22,5 +22,5 @@ export default async function Page({ params }: { params: { id: string } }) {
     return <div>Board not found</div>;
   }
 
-  return <ProjectContainer tasks={tasks} categories={statuses} />;
+  return <BoardContainer tasks={tasks} categories={statuses} />;
 }
