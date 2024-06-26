@@ -9,9 +9,16 @@ export default async function Page({ params }: { params: { id: string } }) {
   // Convert id to integer to access the correct board index
   const boardId = parseInt(id, 10);
   const tasks = await fetchTasksByProject(boardId);
-
-  // Ensure statuses is an array of unique statuses
-  const statuses = tasks ? Array.from(new Set(tasks.map((task) => task.status))) : [];
+  let categories: any = [];
+  // Extract unique statuses
+  const uniqueStatuses = Array.from(new Set(tasks.map((task) => task.status)));
+  const statuses = uniqueStatuses.map((status) => {
+    const categorizedTasks = tasks.filter((task) => task.status === status);
+    const taskIds = categorizedTasks.map((task) => task.task_id);
+    let category = {category: status, taskIds: taskIds}
+    categories.push(category);
+  });
+  
   const boardIndex = boardId - 1;
 
   // Validate if boardIndex is a number and exists in data
@@ -22,5 +29,5 @@ export default async function Page({ params }: { params: { id: string } }) {
     return <div>Board not found</div>;
   }
 
-  return <BoardContainer tasks={tasks} categories={statuses} />;
+  return <BoardContainer tasks={tasks} categories={categories} />;
 }

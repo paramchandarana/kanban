@@ -1,3 +1,5 @@
+'use client';
+
 import { Draggable } from "react-beautiful-dnd";
 
 export default function TaskCard({ task, index }: any) {
@@ -15,7 +17,6 @@ export default function TaskCard({ task, index }: any) {
     const formattedDate = `${dateObject.getDate()}/${dateObject.getMonth() + 1}/${dateObject.getFullYear()}`;
     return formattedDate;
   };
-  console.log(task)
   return (
     <Draggable draggableId={`${task.task_id}`} index={index}>
       {(provided) => (

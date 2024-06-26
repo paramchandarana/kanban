@@ -1,23 +1,26 @@
+"use client";
+
 import Link from "next/link";
 import TaskCard from "./taskCard";
 import { Droppable } from "react-beautiful-dnd";
 
-async function CategoryCard({ category, tasks, index }: any) {
+function CategoryCard({ category, tasks, index }: any) {
   return (
     <div className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm p-4 w-72">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">{category}</h3>
-      <Droppable droppableId={`${index}`}>
-      {(provided) => (
+      <Droppable key={index} droppableId={`${index}`}>
+        {(provided) => (
           <div
-            className="space-y-4 flex-grow overflow-y-auto"
+            className="space-y-4 flex-grow"
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-        {tasks.map((task: any, i: number) => (
-          <TaskCard key={task.task_id} task={task} index={i}/>
-        ))}
-      </div>
-      )}
+            {provided.placeholder}
+            {tasks.map((task: any, i: number) => (
+              <TaskCard key={task.task_id} task={task} index={i} />
+            ))}
+          </div>
+        )}
       </Droppable>
       <Link
         href={`/boards/${category.project_id}/add-task`}
