@@ -1,3 +1,5 @@
+import DarkModeToggle from "./darkModeToggle";
+
 export default function Navbar() {
   return (
     <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -38,6 +40,7 @@ export default function Navbar() {
             </a>
           </div>
           <div className="flex items-center">
+            <DarkModeToggle />
             <div className="flex items-center ms-3">
               <div>
                 <button
