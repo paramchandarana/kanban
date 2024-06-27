@@ -26,3 +26,17 @@ export async function fetchTasksByProject(project_id: any) {
     throw new Error("Failed to fetch tasks.");
   }
 }
+
+export async function fetchTaskOrderByProject(project_id: any) {
+  try {
+    const data = await sql`
+      SELECT * FROM task_order
+      WHERE project_id = ${project_id}
+    `;
+    console.log("task order=",data.rows);
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch tasks.")
+  }
+}

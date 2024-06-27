@@ -1,4 +1,4 @@
-import { fetchProjects, fetchTasksByProject } from "../../lib/data";
+import { fetchProjects, fetchTaskOrderByProject, fetchTasksByProject } from "../../lib/data";
 import BoardContainer from "./boardContainer";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -9,12 +9,17 @@ export default async function Page({ params }: { params: { id: string } }) {
   // Convert id to integer to access the correct board index
   const boardId = parseInt(id, 10);
   const tasks = await fetchTasksByProject(boardId);
+  const taskIdsAll = await fetchTaskOrderByProject(boardId);
   let categories: any = [];
   // Extract unique statuses
   const uniqueStatuses = Array.from(new Set(tasks.map((task) => task.status)));
-  const statuses = uniqueStatuses.map((status) => {
+  if (taskIdsAll) {
+    console.log("taskids all",taskIdsAll);
+  }
+  uniqueStatuses.map((status) => {
     const categorizedTasks = tasks.filter((task) => task.status === status);
     const taskIds = categorizedTasks.map((task) => task.task_id);
+    console.log(taskIds);
     let category = {category: status, taskIds: taskIds}
     categories.push(category);
   });

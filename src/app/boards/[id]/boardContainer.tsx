@@ -35,7 +35,6 @@ export default function BoardContainer({ tasks, categories }: any) {
       return category;
     });
 
-    // Update state or perform further actions with updatedCategories
     setCategoriesState(updatedCategories);
   };
 
@@ -47,7 +46,6 @@ export default function BoardContainer({ tasks, categories }: any) {
             (task: any) => task.status === categoryState.category
           );
 
-          // Sort filteredTasks based on category.taskIds order
           const sortedTasks = filteredTasks.sort((taskA: any, taskB: any) => {
             const indexA = categoryState.taskIds.indexOf(taskA.task_id);
             const indexB = categoryState.taskIds.indexOf(taskB.task_id);
