@@ -31,7 +31,7 @@ export default function TaskCard({ task, index }: any) {
           <p className="text-sm text-gray-600 mb-2 dark:text-gray-300">{task.description}</p>
           <div className="mb-2">
             <span className="text-xs text-gray-500 dark:text-gray-400">
-              Due Date: {formatDate(task.duedate)}
+              Due Date: {formatDate(task.due_date)}
             </span>
           </div>
           <div className="mb-2">

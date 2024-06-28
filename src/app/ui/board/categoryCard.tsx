@@ -5,7 +5,9 @@ import { Droppable } from "react-beautiful-dnd";
 function CategoryCard({ category, tasks, index }: any) {
   return (
     <div className="bg-white border border-gray-200 dark:border-gray-600 rounded-lg shadow-sm p-4 w-72 dark:bg-gray-800 dark:text-white">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{category}</h3>
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        {category}
+      </h3>
       <Droppable droppableId={`${index}`} key={index}>
         {(provided) => (
           <div
@@ -13,9 +15,9 @@ function CategoryCard({ category, tasks, index }: any) {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {tasks.map((task: any, i: number) => (
-              <TaskCard key={task.task_id} task={task} index={i} />
-            ))}
+            {tasks.map((task: any, i: number) => {
+              return <TaskCard key={task.task_id} task={task} index={i} />;
+            })}
             {provided.placeholder}
           </div>
         )}

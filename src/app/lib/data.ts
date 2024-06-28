@@ -1,5 +1,4 @@
 // import { PrismaClient } from '@prisma/client';
-import { Project, Task, TaskOrder } from '@prisma/client';
 
 // const prisma = new PrismaClient();
 import { db } from "../../../prisma/src/db";
@@ -35,10 +34,9 @@ export async function fetchTaskOrderByProject(project_id: number) {
   try {
     const taskOrders = await db.taskOrder.findMany({
       where: {
-        project_id: project_id
+        project_id: project_id,
       }
     });
-    console.log("task order=", taskOrders);
     return taskOrders;
   } catch (error) {
     console.error("Database Error:", error);
