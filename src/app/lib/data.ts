@@ -1,6 +1,4 @@
-// import { PrismaClient } from '@prisma/client';
-
-// const prisma = new PrismaClient();
+"use server";
 import { db } from "../../../prisma/src/db";
 
 // Function to fetch all projects

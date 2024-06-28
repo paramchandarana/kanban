@@ -61,6 +61,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         category: string,
         taskIds: any,
         newTaskIds: any
+        
       ) => {
         "use server";
         updateTaskOrder(
@@ -81,6 +82,15 @@ export default async function Page({ params }: { params: { id: string } }) {
           category
         );
       }}
+
+      // fetchTasks={async (
+      //   projectId: number
+      // ) => {
+      //   "use server";
+      //   fetchTasksByProject(
+      //     projectId
+      //   )
+      // }}
     />
   );
 }

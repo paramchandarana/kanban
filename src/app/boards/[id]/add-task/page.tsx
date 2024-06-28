@@ -1,5 +1,7 @@
 'use client';
 
+import { createTask } from '@/app/lib/actions';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 function AddTask() {
@@ -9,15 +11,13 @@ function AddTask() {
   const [priority, setPriority] = useState('Medium');
   const [status, setStatus] = useState('To Do');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('submitted');
-    // Implement your logic to submit the form data
-  };
+  const Pathname = usePathname();
+  const projectId = Number(Pathname.split("/")[2]);
+  console.log(projectId);
 
   return (
     <main className="p-4">
-      <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+      <form action={() => {createTask(projectId, title, description, status, new Date(dueDate), priority)}} className="max-w-lg mx-auto bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
         <div className="p-4">
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Title

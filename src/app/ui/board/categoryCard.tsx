@@ -2,7 +2,8 @@ import Link from "next/link";
 import TaskCard from "./taskCard";
 import { Droppable } from "react-beautiful-dnd";
 
-function CategoryCard({ category, tasks, index }: any) {
+function CategoryCard({ category, tasks, index, projectId }: any) {
+  // console.log("task s=", tasks)
   return (
     <div className="bg-white border border-gray-200 dark:border-gray-600 rounded-lg shadow-sm p-4 w-72 dark:bg-gray-800 dark:text-white">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -23,7 +24,7 @@ function CategoryCard({ category, tasks, index }: any) {
         )}
       </Droppable>
       <Link
-        href={`/boards/${category.project_id}/add-task`}
+        href={`/boards/${projectId}/add-task`}
         className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-semibold mt-2 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 inline-block"
         passHref
       >

@@ -1,3 +1,5 @@
+"use server";
+
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { db } from "../../../prisma/src/db";
@@ -57,19 +59,30 @@ export async function deleteProject(id: string) {
 
 // Tasks Table
 export async function createTask(
-  categoryId: string,
+  projectId: number,
   title: string,
-  dueDate: string,
+  description: string,
   status: string,
-  priority: string,
-  description: string
+  dueDate: Date,
+  priority: string
 ) {
   try {
-    await sql`
-      INSERT INTO tasks (category_id, title, due_date, status, priority, description)
-      VALUES (${categoryId}, ${title}, ${dueDate}, ${status}, ${priority}, ${description})
-    `;
-    revalidatePath("/boards");
+    const createdTask = await db.task.create({
+      data: {
+        title,
+        description,
+        priority,
+        status,
+        due_date: dueDate,
+        project: {
+          connect: {
+            project_id: projectId
+          }
+        }
+      }
+    });
+    revalidatePath(`/boards/${projectId}/add-task`);
+    // redirect(`/boards/${projectId}`);
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to create task.");

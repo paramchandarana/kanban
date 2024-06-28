@@ -2,29 +2,56 @@
 
 import CategoryCard from "@/app/ui/board/categoryCard";
 import { DragDropContext } from "react-beautiful-dnd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { fetchTasksByProject } from "@/app/lib/data";
 
 export default function BoardContainer({
   projectId,
   tasks,
   categories,
   onTaskReorder,
-  onCategoryUpdate
-}: any) {
+  onCategoryUpdate,
+}:
+any) {
   const [categoriesState, setCategoriesState] = useState(categories);
-  const [previousCategoriesState, setPreviousCategoriesState] = useState(categories);
+  const [previousCategoriesState, setPreviousCategoriesState] =
+    useState(categories);
+  // const [tasks, setTasks] = useState(null);
+  // const fetchTasks = async () => await fetchTasksByProject(projectId);
+  // setTasks
+  // console.log(tasks);
+  // const [tasksFetched, setTasksFetched] = useState(false);
+  // useEffect(() => {
+  //   const fetchTasks = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:3000/api/tasks");
+  //       const foo = response.data;
+  //       setTasks(foo);
+  //       setTasksFetched(true);
+  //     } catch (error) {
+  //       console.error("Error fetching tasks:", error);
+  //       setTasksFetched(true);
+  //     }
+  //   };
+  //   fetchTasks();
+  // }, [tasksFetched]);
+  // console.log("fetched=", tasks);
 
+  console.log("categoriesState =", categoriesState);
   function findExtraElement(a: any, b: any) {
     // Convert array b to a Set for fast lookup
     const setA = new Set(a);
-  
+
     // Find the extra element in b that is not in a
     const extraElement = b.find((element: any) => !setA.has(element));
-  
+
     return extraElement;
   }
 
   const handleDragEnd = (result: any) => {
+    // setTasksFetched(false);
+
     const { destination, source, draggableId } = result;
 
     if (!destination) {
@@ -54,7 +81,7 @@ export default function BoardContainer({
       });
 
       setCategoriesState(updatedCategories);
-      
+
       onTaskReorder(
         projectId,
         sourceCategory.category,
@@ -70,14 +97,13 @@ export default function BoardContainer({
         if (category.category === sourceCategory.category) {
           return { ...category, taskIds: newSourceTaskIds };
         }
-        if (category.category === sourceCategory.category) {
+        if (category.category === destinationCategory.category) {
           return { ...category, taskIds: newDestinationTaskIds };
         }
         return category;
       });
-      
+
       setCategoriesState(updatedCategories);
-      
       onTaskReorder(
         projectId,
         sourceCategory.category,
@@ -91,43 +117,47 @@ export default function BoardContainer({
         destinationCategory.taskIds,
         newDestinationTaskIds
       );
-
+      // const tasks = fetchTasks(projectId)
       // console.log("current=",updatedCategories.find((category: any) => category.category === destinationCategory.category).taskIds);
-      console.log("prev=",newDestinationTaskIds);
 
-      const taskIdToUpdate = findExtraElement(previousCategoriesState.find((category: any) => category.category === destinationCategory.category).taskIds, newDestinationTaskIds);
-      console.log("task id to update=", taskIdToUpdate);
-      onCategoryUpdate(
-        taskIdToUpdate,
-        destinationCategory.category
-      )
+      const taskIdToUpdate = findExtraElement(
+        previousCategoriesState.find(
+          (category: any) => category.category === destinationCategory.category
+        ).taskIds,
+        newDestinationTaskIds
+      );
+      onCategoryUpdate(taskIdToUpdate, destinationCategory.category);
     }
   };
-
-  return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <main className="flex space-x-6">
-        {categoriesState.map((categoryState: any, i: number) => {
-          // Filter tasks for the current category
-          const filteredTasks = tasks.filter(
-            (task: any) => task.status === categoryState.category
-          );
-          console.log("filtered=",filteredTasks)
-          console.log("categorY state=",categoryState);
-          const sortedTasks = categoryState.taskIds.map((taskId: number) =>
-            filteredTasks.find((task: any) => task.task_id == taskId)
-          );
-          console.log("sorted=", sortedTasks)
-          return (
-            <CategoryCard
-              key={categoryState.category}
-              category={categoryState.category}
-              tasks={sortedTasks}
-              index={i}
-            />
-          );
-        })}
-      </main>
-    </DragDropContext>
-  );
+  // console.log("checking changes =", categoriesState)
+  // if (tasksFetched) {
+    return (
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <main className="flex space-x-6">
+          {categoriesState.map((categoryState: any, i: number) => {
+            // Filter tasks for the current category
+            console.log("tasks =", tasks);
+            const filteredTasks = tasks.filter(
+              (task: any) => task.status === categoryState.category
+            );
+            const sortedTasks = categoryState.taskIds.map((taskId: number) =>
+              filteredTasks.find((task: any) => task.task_id == taskId)
+            );
+            console.log("sorted =", filteredTasks, sortedTasks);
+            return (
+              <CategoryCard
+                key={categoryState.category}
+                category={categoryState.category}
+                tasks={sortedTasks}
+                projectId={projectId}
+                index={i}
+              />
+            );
+          })}
+        </main>
+      </DragDropContext>
+    );
+  // } else {
+  //   return <>Loading</>;
+  // }
 }
